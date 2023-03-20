@@ -1,0 +1,19 @@
+{
+    "name": "p-nerd/p-nerd-plugin",
+    "description": "I will be learn Wordpress plugin development with this plugin",
+    "type": "project",
+    "license": "GPLv2",
+    "autoload": {
+        "psr-4": {
+            "Inc\\": "inc/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Shihab Mahamud",
+            "email": "shihab4t@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
