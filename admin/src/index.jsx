@@ -1,7 +1,13 @@
-const { render } = wp.element;
+const { render, StrictMode } = wp.element;
 import "./index.css";
-import App from "./App";
+import App from "./components/App";
 
 const theDiv = document.getElementById("p-nerd-plugin-admin-app");
 
-if (theDiv) render(<App />, theDiv);
+if (theDiv)
+    render(
+        <StrictMode>
+            <App />
+        </StrictMode>,
+        theDiv
+    );

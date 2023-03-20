@@ -15,10 +15,11 @@ final class SettingsApi extends Super
             $this->admin_sub_pages[] = [
                 "parent_slug" => $page["menu_slug"],
                 "page_title" => $page["page_title"],
-                "menu_title" => isset($page["sub_menu_title"]) ? $page["menu_title"] : $page["sub_menu_title"],
+                "menu_title" => empty($page["sub_menu_title"]) ? $page["menu_title"] : $page["sub_menu_title"],
                 "capability" => $page["capability"],
                 "menu_slug" => $page["menu_slug"],
-                "callback" => $page["callback"]
+                "callback" => $page["callback"],
+                "option_key" => "general"
             ];
         }
         return $this;
@@ -50,16 +51,18 @@ final class SettingsApi extends Super
                 $page["icon_url"]
             );
         }
-        if (!empty($this->admin_pages)) {
+        if (!empty($this->admin_sub_pages)) {
+            $activation_data = get_option("p_nerd_plugin_settings_activation");
             foreach ($this->admin_sub_pages as $sub_page) {
-                add_submenu_page(
-                    $sub_page["parent_slug"],
-                    $sub_page["page_title"],
-                    $sub_page["menu_title"],
-                    $sub_page["capability"],
-                    $sub_page["menu_slug"],
-                    $sub_page["callback"]
-                );
+                if ($activation_data[$sub_page["option_key"]])
+                    add_submenu_page(
+                        $sub_page["parent_slug"],
+                        $sub_page["page_title"],
+                        $sub_page["menu_title"],
+                        $sub_page["capability"],
+                        $sub_page["menu_slug"],
+                        $sub_page["callback"]
+                    );
             }
         }
     }

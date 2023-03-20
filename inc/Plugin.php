@@ -13,6 +13,7 @@ final class Plugin extends Super
             Pages\Admin::class,
             Base\Enqueue::class,
             Base\SettingsLinks::class,
+            Rest\SettingActivator::class,
         ];
     }
     function activate_plugin()
