@@ -20,15 +20,22 @@ const Field = ({ label, id, checked, onClick }) => {
 };
 
 const Manage = () => {
-    const [settingsActivationData, setSettingsActivationData] = useState({
-        cpt: false,
-        taxonomy: false,
-        mediaWidget: false,
-    });
+    const activationOptionFieldDefaultData =
+        appLocalizer?.activation_option_field_default_data;
+    for (const key in activationOptionFieldDefaultData) {
+        if (Object.hasOwnProperty.call(activationOptionFieldDefaultData, key)) {
+            activationOptionFieldDefaultData[key] = false;
+        }
+    }
+    const [settingsActivationData, setSettingsActivationData] = useState(
+        activationOptionFieldDefaultData
+    );
     const [isLoading, setIsLoading] = useState(false);
 
     const url = `${appLocalizer.apiUrl}/settings-activations`;
     const nonceHeader = { "X-WP-NONCE": appLocalizer.nonce };
+
+    console.log(settingsActivationData);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,7 +44,7 @@ const Manage = () => {
                     headers: { ...nonceHeader },
                 });
                 const data = await response.json();
-                console.log(data);
+                // console.log(data);
                 setSettingsActivationData(data);
             } catch (error) {
                 console.log(error);
@@ -66,7 +73,6 @@ const Manage = () => {
         } catch (error) {
             console.log(error);
         }
-
         setIsLoading(false);
     };
 

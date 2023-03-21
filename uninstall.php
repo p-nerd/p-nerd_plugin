@@ -1,3 +1,13 @@
 <?php
 
-delete_option("p_nerd_plugin_settings_activation");
+use Inc\Nm;
+
+final class Uninstall
+{
+    function __construct()
+    {
+        delete_option(Nm::$activation_option_field_name);
+    }
+}
+
+new Uninstall();

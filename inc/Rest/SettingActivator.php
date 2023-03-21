@@ -2,29 +2,23 @@
 
 namespace Inc\Rest;
 
-class SettingActivator extends \Inc\Super
+use Inc\Nm;
+
+final class SettingActivator
 {
-    public string $option_name = "p_nerd_plugin_settings_activation";
     function register()
     {
         add_action('rest_api_init', [$this, 'create_rest_routes']);
-        add_option($this->option_name, [
-            "cpt" => true,
-            "taxonomy" => true,
-            "mediaWidget" => true,
-            "general" => true,
-        ]);
-
     }
     function create_rest_routes()
     {
-        $url = "/settings-activations";
-        register_rest_route($this->rest_base, $url, [
+        $route_url = "/settings-activations";
+        register_rest_route(Nm::$rest_base, $route_url, [
             'methods' => 'GET',
             'callback' => [$this, 'get_settings_activations_options'],
             'permission_callback' => [$this, 'get_settings_activations_permission'],
         ]);
-        register_rest_route($this->rest_base, $url, [
+        register_rest_route(Nm::$rest_base, $route_url, [
             'methods' => 'POST',
             'callback' => [$this, 'save_settings_activations_options'],
             'permission_callback' => [$this, 'save_settings_activations_permission'],
@@ -36,7 +30,7 @@ class SettingActivator extends \Inc\Super
     }
     function get_settings_activations_options()
     {
-        $data     = get_option("p_nerd_plugin_settings_activation");
+        $data     = get_option(Nm::$activation_option_field_name);
         $response = $data;
         return rest_ensure_response($response);
     }
@@ -46,9 +40,8 @@ class SettingActivator extends \Inc\Super
     }
     function save_settings_activations_options($req)
     {
-
         $data = array_map('rest_sanitize_boolean', $req['data']);
-        update_option($this->option_name, $data);
+        update_option(Nm::$activation_option_field_name, $data);
         return rest_ensure_response($data);
     }
 }

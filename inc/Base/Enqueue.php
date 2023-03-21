@@ -2,6 +2,8 @@
 
 namespace Inc\Base;
 
+use Inc\Nm;
+
 final class Enqueue extends \Inc\Super
 {
     function register()
@@ -33,8 +35,9 @@ final class Enqueue extends \Inc\Super
         wp_enqueue_script($handle, $src, $deps, $random, $in_footer);
 
         wp_localize_script($handle, 'appLocalizer', [
-            'apiUrl' => home_url("/wp-json/$this->rest_base"),
+            'apiUrl' => home_url('/wp-json/' . Nm::$rest_base),
             'nonce' => wp_create_nonce('wp_rest'),
+            "activation_option_field_default_data" => Nm::$activation_option_field_default_data,
         ]);
     }
 }
