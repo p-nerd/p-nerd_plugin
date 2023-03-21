@@ -2,34 +2,12 @@
 
 namespace Inc\Api;
 
-use Inc\Super;
-
-final class SettingsApi extends Super
+final class SettingsApi extends \Inc\Super
 {
     private $admin_pages = [];
-    private $admin_sub_pages = [];
-    function add_admin_pages(array $admin_pages)
+    function add_admin_page(array $menu)
     {
-        $this->admin_pages = $admin_pages;
-        foreach ($admin_pages as $page) {
-            $this->admin_sub_pages[] = [
-                "parent_slug" => $page["menu_slug"],
-                "page_title" => $page["page_title"],
-                "menu_title" => empty($page["sub_menu_title"]) ? $page["menu_title"] : $page["sub_menu_title"],
-                "capability" => $page["capability"],
-                "menu_slug" => $page["menu_slug"],
-                "callback" => $page["callback"],
-                "option_key" => "general"
-            ];
-        }
-        return $this;
-    }
-    function add_admin_sub_pages(array $admin_sub_pages)
-    {
-        $this->admin_sub_pages = array_merge(
-            $this->admin_sub_pages,
-            $admin_sub_pages
-        );
+        $this->admin_pages[] = $menu;
         return $this;
     }
     function render_admin_pages()
@@ -50,19 +28,34 @@ final class SettingsApi extends Super
                 $page["callback"],
                 $page["icon_url"]
             );
-        }
-        if (!empty($this->admin_sub_pages)) {
-            $activation_data = get_option("p_nerd_plugin_settings_activation");
-            foreach ($this->admin_sub_pages as $sub_page) {
-                if ($activation_data[$sub_page["option_key"]])
+            $sub_menu_title = empty($page["sub_menu_title"])
+                ? $page["menu_title"]
+                : $page["sub_menu_title"];
+            array_unshift($page["sub_menus"], [
+                "menu_title" => $sub_menu_title,
+                "page_title" => $page["page_title"],
+                "menu_slug" => $page["menu_slug"],
+                "option_field_key" => "general"
+            ]);
+            $activation_data = get_option($page["option_field"]);
+            foreach ($page["sub_menus"] as $sub_page) {
+                if ($activation_data[$sub_page["option_field_key"]]) {
+                    $parent_slug = $page["menu_slug"];
+                    $page_title  = $sub_page["page_title"];
+                    $menu_title  = $sub_page["menu_title"];
+                    $capability  = $page["capability"];
+                    $menu_slug   = $sub_page["menu_slug"];
+                    $callback    = $page["callback"];
+
                     add_submenu_page(
-                        $sub_page["parent_slug"],
-                        $sub_page["page_title"],
-                        $sub_page["menu_title"],
-                        $sub_page["capability"],
-                        $sub_page["menu_slug"],
-                        $sub_page["callback"]
+                        $parent_slug,
+                        $page_title,
+                        $menu_title,
+                        $capability,
+                        $menu_slug,
+                        $callback
                     );
+                }
             }
         }
     }
