@@ -14,6 +14,7 @@ final class Plugin extends Super
             Base\Enqueue::class,
             Base\SettingsLinks::class,
             Rest\SettingActivator::class,
+            Api\ProductsPostType::class,
         ];
     }
     function activate_plugin()
