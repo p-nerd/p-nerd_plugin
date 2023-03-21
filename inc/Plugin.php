@@ -10,7 +10,7 @@ final class Plugin extends Super
     {
         parent::__construct();
         $this->services = [
-            Pages\Admin::class,
+            Pages\Dashboard::class,
             Base\Enqueue::class,
             Base\SettingsLinks::class,
             Rest\SettingActivator::class,

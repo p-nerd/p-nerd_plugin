@@ -18,7 +18,7 @@ final class Enqueue extends \Inc\Super
     function enqueue_admin_style()
     {
         $handle = $this->admin_ui_name;
-        $src    = $this->url . "admin/build/index.css";
+        $src    = $this->url . "dashboard/build/index.css";
         $deps   = [];
         $media  = "all";
 
@@ -27,7 +27,7 @@ final class Enqueue extends \Inc\Super
     function enqueue_admin_scripts()
     {
         $handle    = $this->admin_ui_name;
-        $src       = $this->url . "admin/build/index.js";
+        $src       = $this->url . "dashboard/build/index.js";
         $deps      = ["wp-element"];
         $random    = rand();
         $in_footer = true;

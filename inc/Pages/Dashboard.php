@@ -4,7 +4,7 @@ namespace Inc\Pages;
 
 use Inc\Api\SettingsApi;
 
-final class Admin extends \Inc\Super
+final class Dashboard extends \Inc\Super
 {
     private SettingsApi $settings_api;
     function __construct()
@@ -51,6 +51,6 @@ final class Admin extends \Inc\Super
     }
     function admin_dashboard()
     {
-        require_once $this->path . "admin/html.php";
+        require_once $this->path . "dashboard/html.php";
     }
 }
